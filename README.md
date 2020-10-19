@@ -3,6 +3,8 @@ A GUI for IPtables
 
 About: A GUI interface that manages iptable rules in Linux. Using Python programming language, we will be using the geometry manager Tkinter to design the look and function of the user interface. The purpose of this project is to facilitate the creation, adjustment, and removal of iptables rules in a user-friendly environment.
 
+Mock-Up: ![Mock Up](https://github.com/knifane/burn_care/blob/main/pasted%20image%200.png "mockupimage")
+
 Proof of Concept: We expect the code to successfully extract iptables rules.
 
 MVP (minimal viable product): We expect the code to successfully manipulate iptable rules.
