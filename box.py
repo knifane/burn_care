@@ -24,18 +24,19 @@ subtitle_label = Label(root, text = "CURRENT IPTABLE RULES", font="bold", fg="wh
 
 #3 - command for the button click
 def button():
-    #.config makes a change to something - in this case, have the print show up in GUI, not command line
+    #4- .config makes a change to something - in this case, have the print show up in GUI, not command line
     #print("ipmebruh is a made-up command, duh.") - this just prints in command line
     ipmebruh_button.config(text="Refresh") #-> this just replaces button text
-    #creating subprocess variable to run command and print output in GUI
+    #4 - creating subprocess variable to run command and print output in GUI
     process = subprocess.Popen(["sudo iptables -L"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
     output,stderr_ouput = process.communicate()
-    #print ('>', output)
+    #print ('>', output) -> unnecessary
     #result['text']= output.decode('utf-8') -> unncessary
     #trying to print in main window once button cmd is called
     content_label = Label(root, text=output) #everytime button is hit, line will repeat
     #result.pack() -> unnecessary
     content_label.pack()
+    return
 
 #2-putting in a button, styling it, and fitting it with a command (just the name to call it)
 ipmebruh_button = Button(root, text ="ipmebruh", fg="white", bg="#4e4f50", command=button)
