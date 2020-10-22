@@ -3,7 +3,10 @@
 import tkinter as tk
 import subprocess
 
-#FUNCTIONS
+
+
+
+#FUNCTION FOR UPDATE BUTTON---------|
 def button_press():
     global row_of_boxes
     # Dictionary to save placements of input on interface for a single row
@@ -31,17 +34,34 @@ def button_press():
     rule['dest_port']=chain_box.get()
     chain_box=row_of_boxes['protocol_entry']
     rule['protocol']=chain_box.get()
+    
     chain_box=row_of_boxes['accept_or_drop_entry']
     rule['accept_or_drop']=chain_box.get()
     #print(rule['protocol']) #------>SANITY CHECK
-    process = subprocess.Popen(["sudo iptables -A rule['input_output_forward'] -p rule['protocol'] -s rule['source_ip'] --sport rule['source_port'] -d rule['dest_ip'] --dport rule['dest_port'] -j rule['accept_or_drop']"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
+    # print(f"sudo iptables -A {rule['input_output_forward']} -p {rule['protocol']} -s {rule['source_ip']} --sport {rule['source_port']} -d {rule['dest_ip']} --dport {rule['dest_port']} -j {rule['accept_or_drop']}")
+    process = subprocess.Popen([f"sudo iptables -A {rule['input_output_forward']} -p {rule['protocol']} -s {rule['source_ip']} --sport {rule['source_port']} -d {rule['dest_ip']} --dport {rule['dest_port']} -j {rule['accept_or_drop']}"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
     output, stderr_output = process.communicate()
-    # print(output)
-
+    print(output)
+# -------END OF FUNCTION FOR UPDATE BUTTON -------|
 
 #GUI-----------------------------------------|
 window = tk.Tk()
 window.title("SEVEN BUTTONS!!")
+
+# -------FUNCTION FOR ADDING A ROW-------|
+class App:
+    def new_row(self):
+        new_entry = tk.Entry(window)
+        self.num_rows += 1
+        new_entry.grid(column=0, row=self.num_rows)
+    def __init__(self): #the code that executes when an class is initiated
+        self.num_rows = 1
+        createRow_button = tk.Button(window, text='New Row', command=self.new_row) #self refers to the current instance of the class, used to access variables/functions within the class
+        createRow_button.grid()
+
+app = App() #initiates an instance of the App class called app
+
+# --------END OF FUNCTION FOR ADDING A ROW ------|
 
 global top_frame
 top_frame = tk.Frame()
@@ -82,7 +102,7 @@ protocol.grid(row=0, column=6)
 accept_or_drop_label = tk.Label(top_frame, text='  ACCEPT OR DROP  ', font="bold", bg="#4e4f50", fg="white")
 accept_or_drop_label.grid(row=0, column=7)
 
-button = tk.Button(window, text="Print Me!", command = button_press)
+button = tk.Button(window, text="Update", command = button_press)
 
 #COLUMN0
 rule_counter=1
@@ -109,7 +129,7 @@ protocol_entry.grid(row=1,column=6)
 #COLUMN7
 accept_or_drop_entry=tk.Entry(top_frame, width=7)
 accept_or_drop_entry.grid(row=1,column=7)
-
+# --------------end of GUI---------------------|
 
 
 button.grid()
