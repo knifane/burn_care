@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import tkinter as tk
+import subprocess
 
 #FUNCTIONS
 def button_press():
@@ -32,9 +33,13 @@ def button_press():
     rule['protocol']=chain_box.get()
     chain_box=row_of_boxes['accept_or_drop_entry']
     rule['accept_or_drop']=chain_box.get()
-    print(rule)
+    #print(rule['protocol']) #------>SANITY CHECK
+    process = subprocess.Popen(["sudo iptables -A rule['input_output_forward'] -p rule['protocol'] -s rule['source_ip'] --sport rule['source_port'] -d rule['dest_ip'] --dport rule['dest_port'] -j rule['accept_or_drop']"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
+    output, stderr_output = process.communicate()
+    # print(output)
 
-#GUI
+
+#GUI-----------------------------------------|
 window = tk.Tk()
 window.title("SEVEN BUTTONS!!")
 
