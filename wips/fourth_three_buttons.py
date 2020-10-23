@@ -8,15 +8,24 @@ rule_counter=0
 table_of_rules = []
 row_count = 0
 window = tk.Tk()
-window.title("TWO BUTTONS!!")
+window.title("Burncare")
+
+subtitle_label = tk.Label(window, text = "CURRENT IPTABLE RULES", font="bold", fg="white", bg="#4e4f50")
+subtitle_label.grid(row=0)
+process = subprocess.Popen(["sudo iptables -L"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
+current,stderr_current = process.communicate()
+current_label = tk.Label(window, text=current,font="bold", fg="white", bg="#4e4f50")
+current_label.grid(row=1)
+
 class App(object):
     #GUI-----------------------------------------|
     
 
     global top_frame
-    top_frame = tk.Frame()
-    top_frame.grid(row=0, column=0, sticky="nsew")
-    top_frame.configure(bg="#4e4f50")
+    top_frame = tk.Frame(bg="#4e4f50")    
+    top_frame.configure()
+    top_frame.grid(row=2, column=0, sticky="nsew")
+
     top_frame.columnconfigure(0, weight=1)
     top_frame.columnconfigure(1, weight=1)
     top_frame.columnconfigure(2, weight=1)
@@ -26,6 +35,21 @@ class App(object):
     top_frame.columnconfigure(6, weight=1)
     top_frame.columnconfigure(7, weight=1)
     top_frame.rowconfigure(2, weight=1)
+
+    #Function for linking new rows to the "Add Rule" button
+    def __init__(self):
+        
+
+        self.num_rows = 1
+        #Auto run function at start
+        self.new_row()
+        add_rule_button = tk.Button(bottom_center_frame, text='New Rule', font="bold", bg="#4e4f50", fg="white", command=self.new_row)
+        add_rule_button.grid(row=0, column=0)
+   
+        #Update button
+        update_button = tk.Button(bottom_center_frame, text="Update", command = self.button_press, font="bold", bg="#4e4f50", fg="white")
+        update_button.grid(row=0, column=2)
+
 
     #rule num column header and enty box
     rule_header = tk.Label(top_frame, text='  RULE No.  ', font="bold", bg="#4e4f50", fg="white")
@@ -131,17 +155,7 @@ class App(object):
         table_of_rules.append(row_of_boxes)
         #print(table_of_rules)
 
-    #Function for linking new rows to the "Add Rule" button
-    def __init__(self):
-        self.num_rows = 1
-        #Auto run function at start
-        self.new_row()
-        add_rule_button = tk.Button(bottom_center_frame, text='New Rule', font="bold", bg="#4e4f50", fg="white", command=self.new_row)
-        add_rule_button.grid(row=0, column=0)
-        #Save button
-        update_button = tk.Button(bottom_center_frame, text="Update", command = self.button_press, font="bold", bg="#4e4f50", fg="white")
-        update_button.grid(row=0, column=2)
-
+    
     #FUNCTION FOR UPDATE BUTTON---------|
     def button_press(self):
         global row_of_boxes
@@ -175,20 +189,43 @@ class App(object):
         rule['accept_or_drop']=chain_box.get()
         #print(rule['protocol']) #------>SANITY CHECK
         # print(f"sudo iptables -A {rule['input_output_forward']} -p {rule['protocol']} -s {rule['source_ip']} --sport {rule['source_port']} -d {rule['dest_ip']} --dport {rule['dest_port']} -j {rule['accept_or_drop']}")
+        
         process = subprocess.Popen([f"sudo iptables -A {rule['input_output_forward']} -p {rule['protocol']} -s {rule['source_ip']} --sport {rule['source_port']} -d {rule['dest_ip']} --dport {rule['dest_port']} -j {rule['accept_or_drop']}"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
         output, stderr_output = process.communicate()
+
+        global current_label
+        current_label.destroy()
+        updated_process = subprocess.Popen(["sudo iptables -L"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
+        current,stderr_current = updated_process.communicate()
+        current_label = tk.Label(window, text=current,font="bold", fg="white", bg="#4e4f50")
+        current_label.grid(row=1)
+
         #print(output)
         #---END OF FUNCTION FOR UPDATE BUTTON-------|
 
-    #BUTTONS/ENTRY BOXES/DROPDOWN BUTTONS
+    # --------------DELETE ALL FUNCTION --------------|    
+    def delete_all():
+        # table=iptc.Table(iptc.Table.FILTER)
+        # table.flush()
+        # table.refresh() 
+        global current_label
+        current_label.destroy()
+        cleared_process = subprocess.Popen(["sudo iptables -F && sudo iptables -L"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
+        current,stderr_current = cleared_process.communicate()
+        current_label = tk.Label(window, text=current,font="bold", fg="white", bg="#4e4f50")
+        current_label.grid(row=1)
+
+    #----------END OF DELETE ALL FUNCTION ----------------|
+
+    #BUTTONS FRAMES FOR BUTTONS
    #Bottom frame containing the "Add Rule", "Remove Rule", and "Save" buttons
     global bottom_frame
     bottom_frame = tk.LabelFrame(window, bg="#4e4f50")
-    bottom_frame.grid(row=1, column=0, sticky='se', padx=20, pady=20)
+    bottom_frame.grid(row=3, column=0, sticky='se', padx=20, pady=20)
 
     global bottom_center_frame
     bottom_center_frame = tk.LabelFrame(window, bg="#4e4f50")
-    bottom_center_frame.grid(row=1, column=0, sticky='s', padx=20, pady=20)
+    bottom_center_frame.grid(row=3, column=0, sticky='s', padx=20, pady=20)
     # #Remove rule button
     # remove_rule_button = Button(bottom_center_frame, text='Remove Rule', font="bold", bg="#353535", fg="#80FF00")
     # remove_rule_button.grid(row=0, column=1)
@@ -198,14 +235,12 @@ class App(object):
     # remove_rule_button.grid(row=0, column=1)
     # remove_rule_entry_box = Entry(bottom_center_frame, width=12, bg="#353535", fg="#80FF00")
     # remove_rule_entry_box.grid(row=0, column=2, ipady=5)    
-    #Save button
-    # update_button = tk.Button(bottom_center_frame, text="Update", command = self.button_press, font="bold", bg="#4e4f50", fg="white")
-    # update_button.grid(row=0, column=2)
-    # #Show Rules Button
-    # show_current_rules = Button(bottom_frame, text='View Current Rules', font="bold", bg="#353535", fg="#80FF00")
-    # show_current_rules.grid(row=0, column=0)
-    # show_current_rules.bind("<Button-1>", Show_Rules)    
-    # #Bottom left frame for "Delete All" button
+
+    #delete all button
+    delete_all=tk.Button(bottom_frame, text='Delete All', font="bold", bg="#4e4f50", fg="white", command=delete_all)
+    delete_all.grid(row=0, column=0)
+
+
     # global bottom_left_frame
     # bottom_left_frame = LabelFrame(root, bg="#353535") 
     # bottom_left_frame.grid(row=1, column=0, sticky='sw', padx=20, pady=20)
