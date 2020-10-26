@@ -5,11 +5,11 @@ A GUI for iptables that manages firewallrules in Linux, using Python programming
 # Prerequisites
 
  - Python 3
-		 - sudo apt install python3.6
+	- sudo apt install python3.6
  - Update Linux packages
-		 - apt update -y && apt upgrade -y && apt dist-upgrade
+	- apt update -y && apt upgrade -y && apt dist-upgrade
  - Python Iptables
-		 - ip3 install --upgrade python-iptables
+	- ip3 install --upgrade python-iptables
 
 # Installation
 		 - cd /opt
