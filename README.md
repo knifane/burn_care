@@ -10,6 +10,7 @@ A GUI for iptables that manages firewallrules in Linux, using Python programming
 	- apt update -y && apt upgrade -y && apt dist-upgrade
  - Python Iptables
 	- pip3 install --upgrade python-iptables
+- Please note in order to run Burncare, you must have sudo privileges.
 
 # Installation
 		 - cd /opt
