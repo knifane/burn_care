@@ -9,7 +9,7 @@ A GUI for iptables that manages firewallrules in Linux, using Python programming
  - Update Linux packages (note: may take a long time, depending on the current state of your system)
 	- apt update -y && apt upgrade -y && apt dist-upgrade
  - Python Iptables
-	- ip3 install --upgrade python-iptables
+	- pip3 install --upgrade python-iptables
 
 # Installation
 		 - cd /opt
