@@ -1,28 +1,43 @@
 #!/usr/bin/env python3
 
 import tkinter as tk
+import tkinter.ttk as ttk
 import subprocess
 import iptc
+import os
 
-rule_counter=0
+rule_counter= 0
 table_of_rules = []
 row_count = 0
 window = tk.Tk()
 window.title("Burncare")
 
-subtitle_label = tk.Label(window, text = "CURRENT IPTABLE RULES", font="bold", fg="white", bg="#4e4f50")
-subtitle_label.grid(row=0)
+#------1st try to get icon next to window title ------|
+#window.iconbitmap("@favicon.xbm")
+#--- end of 1st try -------------|
+
+#-----2nd try to get icon next to window title --------|
+# if "nt" == os.name: 
+#     window.wm_iconbitmap(bitmap="favicon.ico")
+# else:
+#     window.wm_iconbitmap(bitmap="@favicon.xbm")
+#-------end of 2nd try ---------------------------|
+
+window.configure(bg="#5E647D")
+
+subtitle_label = tk.Label(window, text = "CURRENT IPTABLE RULES", font="bold", fg="white", bg="#8C92AC")
+subtitle_label.grid(row=0, sticky="nsew")
 process = subprocess.Popen(["sudo iptables -L"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
 current,stderr_current = process.communicate()
-current_label = tk.Label(window, text=current,font="bold", fg="white", bg="#4e4f50")
-current_label.grid(row=1)
+current_label = tk.Label(window, text=current,font="bold", fg="white", bg="#8C92AC")
+current_label.grid(row=1, sticky="nsew")
 
 class App(object):
     #GUI-----------------------------------------|
     
 
     global top_frame
-    top_frame = tk.Frame(bg="#4e4f50")    
+    top_frame = tk.Frame(bg="#5E647D")    
     top_frame.configure()
     top_frame.grid(row=2, column=0, sticky="nsew")
 
@@ -43,37 +58,37 @@ class App(object):
         self.num_rows = 1
         #Auto run function at start
         self.new_row()
-        add_rule_button = tk.Button(bottom_center_frame, text='New Rule', font="bold", bg="#4e4f50", fg="white", command=self.new_row)
+        add_rule_button = tk.Button(bottom_center_frame, text='New Rule', font="bold", bg="#5E647D", fg="white", command=self.new_row)
         add_rule_button.grid(row=0, column=0)
    
         #Update button
-        update_button = tk.Button(bottom_center_frame, text="Update", command = self.button_press, font="bold", bg="#4e4f50", fg="white")
+        update_button = tk.Button(bottom_center_frame, text="Update", command = self.button_press, font="bold", bg="#5E647D", fg="white")
         update_button.grid(row=0, column=2)
 
 
     #rule num column header and enty box
-    rule_header = tk.Label(top_frame, text='  RULE No.  ', font="bold", bg="#4e4f50", fg="white")
+    rule_header = tk.Label(top_frame, text='  RULE No.  ', font="bold", bg="#5E647D", fg="white")
     rule_header.grid(row=0, column=0)
     #input/output/fowrward column header and entry box
-    input_output_forward = tk.Label(top_frame, text='  INPUT/OUTPUT/FORWARD  ', font="bold", fg ="white", bg="#4e4f50")
+    input_output_forward = tk.Label(top_frame, text='  INPUT/OUTPUT/FORWARD  ', font="bold", fg ="white", bg="#5E647D")
     input_output_forward.grid(row=0, column=1)
     #Source IP column header and entry box
-    source_ip = tk.Label(top_frame, text='  SOURCE IP  ', font="bold", bg="#4e4f50", fg="white")
+    source_ip = tk.Label(top_frame, text='  SOURCE IP  ', font="bold", bg="#5E647D", fg="white")
     source_ip.grid(row=0, column=2)
     #Source port column header and entry box
-    source_port = tk.Label(top_frame, text='  SOURCE PORT  ', font="bold", bg="#4e4f50", fg="white")
+    source_port = tk.Label(top_frame, text='  SOURCE PORT  ', font="bold", bg="#5E647D", fg="white")
     source_port.grid(row=0, column=3)
     #Destination IP column header and entry box
-    destination_ip = tk.Label(top_frame, text='  DESTINATION IP  ', font="bold", bg="#4e4f50", fg="white")
+    destination_ip = tk.Label(top_frame, text='  DESTINATION IP  ', font="bold", bg="#5E647D", fg="white")
     destination_ip.grid(row=0, column=4)
     #Destination port column header and entry box
-    destination_port = tk.Label(top_frame, text='  DESTINATION PORT  ', font="bold", bg="#4e4f50", fg="white")
+    destination_port = tk.Label(top_frame, text='  DESTINATION PORT  ', font="bold", bg="#5E647D", fg="white")
     destination_port.grid(row=0, column=5)
     #Protocol column header and drop down box
-    protocol = tk.Label(top_frame, text='  PROTOCOL  ', font="bold", bg="#4e4f50", fg="white")
+    protocol = tk.Label(top_frame, text='  PROTOCOL  ', font="bold", bg="#5E647D", fg="white")
     protocol.grid(row=0, column=6)
     #Accept or Drop column header and drop down box
-    accept_or_drop_label = tk.Label(top_frame, text='  ACCEPT/DROP  ', font="bold", bg="#4e4f50", fg="white")
+    accept_or_drop_label = tk.Label(top_frame, text='  ACCEPT/DROP  ', font="bold", bg="#5E647D", fg="white")
     accept_or_drop_label.grid(row=0, column=7)
 
  #Function to create a new rule row
@@ -83,7 +98,7 @@ class App(object):
         global row_count
         #COLUMN0
         rule_counter += 1 
-        new_rule = tk.Label(top_frame, text=rule_counter, font="bold", bg="#4e4f50", fg="white")
+        new_rule = tk.Label(top_frame, text=rule_counter, font="bold", bg="#5E647D", fg="white")
         new_rule.grid(column=0, ipady=10)
         #COLUMN1
         global input_output_forward_options
@@ -91,27 +106,27 @@ class App(object):
         input_output_forward_options.set("INPUT")
         global input_output_forward_button
         input_output_forward_button = tk.OptionMenu(top_frame, input_output_forward_options, "INPUT", "OUTPUT", "FORWARD")
-        input_output_forward_button.config(bg="#4e4f50", fg="white", width=14)
+        input_output_forward_button.config(bg="#5E647D", fg="white", width=14)
         input_output_forward_button.grid(column=1)
         #COLUMN2
         global source_ip_entry
         source_ip_entry = tk.Entry(top_frame, width=14)
-        source_ip_entry.config(bg="#4e4f50", fg="white")
+        source_ip_entry.config(bg="#5E647D", fg="white")
         source_ip_entry.grid(column=2)
         #COLUMN3
         global source_port_entry
         source_port_entry = tk.Entry(top_frame, width=7)
-        source_port_entry.config(bg="#4e4f50", fg="white")
+        source_port_entry.config(bg="#5E647D", fg="white")
         source_port_entry.grid(column=3)
         #COLUMN4
         global dest_ip_entry
         dest_ip_entry= tk.Entry(top_frame, width=14)
-        dest_ip_entry.config(bg="#4e4f50", fg="white")
+        dest_ip_entry.config(bg="#5E647D", fg="white")
         dest_ip_entry.grid(column=4)
         #COLUMN5
         global dest_port_entry
         dest_port_entry = tk.Entry(top_frame, width=7)
-        dest_port_entry.config(bg="#4e4f50", fg="white")
+        dest_port_entry.config(bg="#5E647D", fg="white")
         dest_port_entry.grid(column=5)
         #COLUMN6
         global protocol_options 
@@ -119,7 +134,7 @@ class App(object):
         protocol_options.set("tcp")
         global protocol_button 
         protocol_button = tk.OptionMenu(top_frame, protocol_options, "tcp", "udp", "icmp")
-        protocol_button.config(bg="#4e4f50", fg="white", width=7)
+        protocol_button.config(bg="#5E647D", fg="white", width=7)
         protocol_button.grid(column=6)
         #COLUMN7
         global accept_or_drop_options
@@ -127,7 +142,7 @@ class App(object):
         accept_or_drop_options.set("ACCEPT")
         global accept_or_drop_button 
         accept_or_drop_button = tk.OptionMenu(top_frame, accept_or_drop_options, "ACCEPT", "DROP")
-        accept_or_drop_button.config(bg="#4e4f50", fg="white", width=7)
+        accept_or_drop_button.config(bg="#5E647D", fg="white", width=7)
         accept_or_drop_button.grid(column=7)
 
         self.num_rows += 1
@@ -156,7 +171,7 @@ class App(object):
         #print(table_of_rules)
 
     
-    #FUNCTION FOR UPDATE BUTTON---------|
+    #----------------FUNCTION FOR UPDATE BUTTON---------|
     def button_press(self):
         global row_of_boxes
         # Dictionary to save placements of input on interface for a single row
@@ -197,7 +212,7 @@ class App(object):
         current_label.destroy()
         updated_process = subprocess.Popen(["sudo iptables -L"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
         current,stderr_current = updated_process.communicate()
-        current_label = tk.Label(window, text=current,font="bold", fg="white", bg="#4e4f50")
+        current_label = tk.Label(window, text=current,font="bold", fg="white", bg="#5E647D")
         current_label.grid(row=1)
 
         #print(output)
@@ -212,7 +227,7 @@ class App(object):
         current_label.destroy()
         cleared_process = subprocess.Popen(["sudo iptables -F && sudo iptables -L"], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True)
         current,stderr_current = cleared_process.communicate()
-        current_label = tk.Label(window, text=current,font="bold", fg="white", bg="#4e4f50")
+        current_label = tk.Label(window, text=current,font="bold", fg="white", bg="#5E647D")
         current_label.grid(row=1)
 
     #----------END OF DELETE ALL FUNCTION ----------------|
@@ -220,11 +235,11 @@ class App(object):
     #BUTTONS FRAMES FOR BUTTONS
    #Bottom frame containing the "Add Rule", "Remove Rule", and "Save" buttons
     global bottom_frame
-    bottom_frame = tk.LabelFrame(window, bg="#4e4f50")
+    bottom_frame = tk.LabelFrame(window, bg="#5E647D")
     bottom_frame.grid(row=3, column=0, sticky='se', padx=20, pady=20)
 
     global bottom_center_frame
-    bottom_center_frame = tk.LabelFrame(window, bg="#4e4f50")
+    bottom_center_frame = tk.LabelFrame(window, bg="#5E647D")
     bottom_center_frame.grid(row=3, column=0, sticky='s', padx=20, pady=20)
     # #Remove rule button
     # remove_rule_button = Button(bottom_center_frame, text='Remove Rule', font="bold", bg="#353535", fg="#80FF00")
@@ -237,7 +252,7 @@ class App(object):
     # remove_rule_entry_box.grid(row=0, column=2, ipady=5)    
 
     #delete all button
-    delete_all=tk.Button(bottom_frame, text='Delete All', font="bold", bg="#4e4f50", fg="white", command=delete_all)
+    delete_all=tk.Button(bottom_frame, text='Delete All', font="bold", bg="#5E647D", fg="white", command=delete_all)
     delete_all.grid(row=0, column=0)
 
 
