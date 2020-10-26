@@ -3,6 +3,7 @@
 A GUI for iptables that manages firewallrules in Linux, using Python programming language. Constructed with Tkinter.
 
 # Prerequisites
+![linux prerequisites gif](https://github.com/knifane/burn_care/blob/main/images/Linux%20prereqs.mp4)
 
  - Python 3
 	- sudo apt install python3.6
