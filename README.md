@@ -1,12 +1,21 @@
-# burn_care
-A GUI for IPtables
+# Burncare
 
-About: A GUI interface that manages iptable rules in Linux. Using Python programming language, we will be using the geometry manager Tkinter to design the look and function of the user interface. The purpose of this project is to facilitate the creation, adjustment, and removal of iptables rules in a user-friendly environment.
+A GUI for iptables that manages firewallrules in Linux, using Python programming language. Constructed with Tkinter.
 
-Mock-Up: ![Mock Up](https://github.com/knifane/burn_care/blob/main/pasted%20image%200.png "mockupimage")
+# Prerequisites
 
-Proof of Concept: We expect the code to successfully extract iptables rules.
+ - Python 3
+    	 - sudo apt install python3.6
+ - Update Linux packages
+    	 - apt update -y && apt upgrade -y && apt dist-upgrade
+ - Python Iptables
+    	 - ip3 install --upgrade python-iptables
 
-MVP (minimal viable product): We expect the code to successfully manipulate iptable rules.
+# Installation
+		 - cd /opt
+		 - git clone https://github.com/knifane/burn_care.git
 
-Stretch goal: We can extend a similarly styled GUI interface for the chmod command of all the files in the current directory. The user would be presented with the current permissions for each file in a concise table format and have the choice to adjust permissions for individual files or for multiple selections.
+# Create a symbolic link
+		- cd /bin
+		- ln -s /opt/burn_care/burncare.py Burncare
+ 
